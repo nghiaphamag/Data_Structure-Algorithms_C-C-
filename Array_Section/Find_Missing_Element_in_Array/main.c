@@ -84,7 +84,7 @@ void findDuplicateElement(int arr[], int element) {
     }
 }
 
-// Using hashtable/bitset finding duplicate elements in a sorted array
+// Using hashtable/bitset finding duplicate elements in a sorted array (best solution)
 void findDuplicateElementByHashTable(int arr[], int element) {
     int max = arr[element-1];
     
@@ -119,7 +119,7 @@ void findDulicateElementInUnsorted(int arr[], int element) {
     }
 }
 
-// Using hashtable/bitset finding duplicate elements in a unsorted array
+// Using hashtable/bitset finding duplicate elements in a unsorted array (best solution)
 void findDulicateElementInUnsortedByHashTable(int arr[], int element) {
     int low, high;
     int *arrMaxMin = findMaxAndMin(arr, element);
@@ -138,6 +138,55 @@ void findDulicateElementInUnsortedByHashTable(int arr[], int element) {
             printf("[Unsorted] using hashtable find duplicate miss elements: %d appearing %d times\n", i, arrTemp[i]);
     }
     free(arrMaxMin);
+}
+
+// Finding a pair with sum k (a+b = k) in unsorded array
+void findAPairWithSumInUnsorted(int arr[], int element, int k) {
+    int i, j;
+    for(i = 0; i < element-1; i++) {
+        for (j = i+1; j < element; j++) {
+            if ((arr[i] + arr[j]) == k) {
+                printf("[Unsorted] %d + %d = %d \n", arr[i], arr[j], k);
+            }
+        }
+    }
+}
+
+// Using hashtable/bitset finding a pair with sum k (a+b = k) in unsorded array (best solution)
+void findAPairWithSumInUnsortedByHashTable(int arr[], int element, int k) {
+    int low, high;
+    int *arrMaxMin = findMaxAndMin(arr, element);
+    
+    low = arrMaxMin[0];
+    high = arrMaxMin[1];
+    int arrTemp[high];
+    memset(arrTemp, 0, sizeof(arrTemp));
+
+    for (int i = 0; i < element; i++) {
+        if (k-arr[i] >= 0 && arrTemp[k-arr[i]] != 0) {
+            printf("[Unsorted] using hashtable %d + %d = %d \n", arr[i], k-arr[i], k);
+        }
+        arrTemp[arr[i]]++;
+    }
+}
+
+// Finding a pair with sum k (a+b = k) in sorded array
+void findAPairWithSumInSorted(int arr[], int element, int k) {
+    int i, j;
+    i = 0;
+    j = element - 1;
+
+    while (i < j) {
+        if (arr[i] + arr[j] == k) {
+            printf("[Sorted] %d + %d = %d \n", arr[i], arr[j], k);
+            i++;
+            j--;
+        }
+        else if (arr[i] + arr[j] < k)
+            i++;
+        else
+            j--;
+    }
 }
 
 int main() {
@@ -160,6 +209,15 @@ int main() {
     printf("\n");
     int arr6[] = {5, 4, 8,  9, 4, 8, 11, 15, 5, 16, 4, 4};
     findDulicateElementInUnsortedByHashTable(arr6, 12);
+    printf("\n");
+    int arr7[] = {5, 4, 8,  9, 4, 8, 11, 15, 5, 16, 6, 1};
+    findAPairWithSumInUnsorted(arr7, 12, 10);
+    printf("\n");
+    int arr8[] = {5, 4, 8,  9, 4, 8, 11, 15, 5, 16, 6, 1};
+    findAPairWithSumInUnsortedByHashTable(arr8, 12, 10);
+    printf("\n");
+    int arr9[] = {-2, 1, 2, 3, 5, 6, 7, 8, 9, 10, 11, 12};
+    findAPairWithSumInSorted(arr9, 12, 10);
     return 0;
 }
 
